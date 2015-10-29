@@ -4,6 +4,7 @@ defmodule InfluxEx.QueryResponse do
   """
 
   defstruct status_code: nil, results: []
+
   @type t :: %__MODULE__{status_code: integer, results: []}
 
   @doc """
