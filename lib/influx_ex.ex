@@ -1,0 +1,2 @@
+defmodule InfluxEx do
+end
