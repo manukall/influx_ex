@@ -28,16 +28,31 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ### Configure your connection module:
 In `config.exs` (or `dev.exs` or `test.exs`...)
 
-    config :my_app, InfluxConnection
+    config :my_app, InfluxConnection,
       base_url: "http://localhost:8086"
 
 
 ## Usage
+
 ### Manage databases:
-#### Create a database:
+#### Creating a database:
 
     TestConnection.create_db("my_db")
 
-#### Drop a database:
+See `InfluxEx.Connection` for details.
+
+#### Droping a database:
 
     TestConnection.drop_db("my_db")
+
+See `InfluxEx.Connection` for details.
+
+### Writing data:
+
+    :ok = TestConnection.write(%{measurement: "cpu",
+                                 fields: %{load: 0.12},
+                                 tags: %{host: "web-staging"},
+                                 time: 12345678},
+                               "my_db")
+
+See `InfluxEx.Connection` for details.

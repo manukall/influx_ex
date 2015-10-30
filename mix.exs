@@ -1,5 +1,6 @@
 defmodule InfluxEx.Mixfile do
   use Mix.Project
+  @github "https://github.com/manukall/influx_ex"
 
   def project do
     [app: :influx_ex,
@@ -8,7 +9,8 @@ defmodule InfluxEx.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps,
-     dialyzer: [plt_add_deps: true, plt_file: ".local.plt"]
+     dialyzer: [plt_add_deps: true, plt_file: ".local.plt"],
+     docs: docs
     ]
   end
 
@@ -33,5 +35,12 @@ defmodule InfluxEx.Mixfile do
      {:poison, "~> 1.5"},
      {:earmark, "~> 0.1", only: :dev},
      {:ex_doc, "~> 0.10", only: :dev}]
+  end
+
+  def docs do
+    [ extras:     [ "README.md" ],
+      main:       "extra-readme",
+      source_ref: "master",
+      source_url: @github ]
   end
 end
