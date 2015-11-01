@@ -28,7 +28,7 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 ### Configure your connection module:
 In `config.exs` (or `dev.exs` or `test.exs`...)
 
-    config :my_app, InfluxConnection,
+    config :my_app, MyApp.InfluxConnection,
       base_url: "http://localhost:8086"
 
 
