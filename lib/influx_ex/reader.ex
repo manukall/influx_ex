@@ -11,12 +11,11 @@ defmodule InfluxEx.Reader do
   end
 
   @spec parse_single_query_result(map) :: {:ok, list} | {:error, String.t}
-  defp parse_single_query_result(result) do
-    case result["error"] do
-      nil -> {:ok, Enum.map(result["series"], &parse_series_result/1)}
-      error -> {:error, error}
-    end
+  defp parse_single_query_result(%{"error" => error}), do: {:error, error}
+  defp parse_single_query_result(%{"series" => series}) do
+    {:ok, Enum.map(series, &parse_series_result/1)}
   end
+  defp parse_single_query_result(%{}), do: {:ok, []}
 
   @spec parse_series_result(map) :: map
   defp parse_series_result(%{"name" => name, "columns" => columns, "values" => values}) do

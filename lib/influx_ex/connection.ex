@@ -63,7 +63,7 @@ defmodule InfluxEx.Connection do
 
 
   @doc """
-  Writes a point to the database.
+  Writes one or multiple points to the database.
 
   A point is a map of the form
 
@@ -77,7 +77,7 @@ defmodule InfluxEx.Connection do
   Returns either `:ok` in case of success
   or `{:error, "error message"}` in case of errors.
   """
-  @callback write(map, String.t) :: :ok | {:error, String.t}
+  @callback write(map | list(map), String.t) :: :ok | {:error, String.t}
 
 
   @doc """

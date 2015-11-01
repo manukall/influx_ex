@@ -37,22 +37,48 @@ In `config.exs` (or `dev.exs` or `test.exs`...)
 ### Manage databases:
 #### Creating a database:
 
-    TestConnection.create_db("my_db")
+    MyApp.InfluxConnection.create_db("my_db")
 
 See `InfluxEx.Connection` for details.
 
 #### Droping a database:
 
-    TestConnection.drop_db("my_db")
+    MyApp.InfluxConnection.drop_db("my_db")
 
 See `InfluxEx.Connection` for details.
 
 ### Writing data:
 
-    :ok = TestConnection.write(%{measurement: "cpu",
+    :ok = MyApp.InfluxConnection.write(%{measurement: "cpu",
                                  fields: %{load: 0.12},
                                  tags: %{host: "web-staging"},
                                  time: 12345678},
                                "my_db")
 
+You can also write a list of points in a single query:
+
+    points = for i <- 1..2 do
+      %{measurement: "cpu",
+        fields: %{load: i + 0.12},
+        time: i + 12345670}
+    end
+    :ok = MyApp.InfluxConnection.write(points, "my_db")
+
 See `InfluxEx.Connection` for details.
+
+
+### Reading data:
+
+    MyApp.InfluxConnection.read("SELECT * FROM cpu", "my_db")
+    [ok: [
+    %{series: "cpu",
+      points: [
+        %{"host" => "web-staging", "load" => 0.12,
+        "time" => "2015-11-01T14:26:25.73642475Z"}
+      ]}
+    ]]
+
+Because you can potentially run multiple queries in one request, you will get a list
+back from `InfluxConnection.read`. This list consists of a `{:ok, results}` or
+`{:error, message}` tuple for each query.
+`results` in turn consists of a list of points per series.
